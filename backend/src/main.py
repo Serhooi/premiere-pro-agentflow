@@ -23,6 +23,9 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'asdf#FGSgvasgf$5$WGT')
 # Для production используем PostgreSQL URL, для разработки - SQLite
 database_url = os.getenv('DATABASE_URL')
 if database_url:
+    # Исправляем URL для psycopg3
+    if database_url.startswith('postgresql://'):
+        database_url = database_url.replace('postgresql://', 'postgresql+psycopg://', 1)
     # PostgreSQL для production
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 else:
